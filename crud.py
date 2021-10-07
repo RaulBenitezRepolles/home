@@ -49,14 +49,14 @@ def main():
 			clean_df = pd.DataFrame(result,columns=["Task","Status","Date"])
 			st.dataframe(clean_df)
 
-		with st.expander("Task Status"):
-			task_df = clean_df['Status'].value_counts().to_frame()
-			# st.dataframe(task_df)
-			task_df = task_df.reset_index()
-			st.dataframe(task_df)
+		#with st.expander("Task Status"):
+		#	task_df = clean_df['Status'].value_counts().to_frame()
+		#	# st.dataframe(task_df)
+		#	task_df = task_df.reset_index()
+		#	st.dataframe(task_df)
 
-			p1 = px.pie(task_df,names='index',values='Status')
-			st.plotly_chart(p1,use_container_width=True)
+		#	p1 = px.pie(task_df,names='index',values='Status')
+		#	st.plotly_chart(p1,use_container_width=True)
 
 
 	elif choice == "Update":
