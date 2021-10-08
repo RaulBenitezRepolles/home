@@ -3,41 +3,47 @@ conn = sqlite3.connect('data.db',check_same_thread=False)
 c = conn.cursor()
 
 
-def create_table():
-	c.execute('CREATE TABLE IF NOT EXISTS taskstable(task TEXT,task_status TEXT,task_due_date DATE)')
 
+def create_table_compra():
+	c.execute('CREATE TABLE IF NOT EXISTS compra(articulo TEXT,fecha TEXT)')
 
-def add_data(task,task_status,task_due_date):
-	c.execute('INSERT INTO taskstable(task,task_status,task_due_date) VALUES (?,?,?)',(task,task_status,task_due_date))
+def add_data_compra(Artículo,now):
+	c.execute('INSERT INTO compra(articulo,fecha) VALUES (?,?)',(Artículo,now))
+	conn.commit()
+
+def view_all_data_compra():
+	c.execute('SELECT * FROM compra')
+	data = c.fetchall()
+	return data
+
+def view_all_task_names_compra():
+	c.execute('SELECT DISTINCT articulo FROM compra')
+	data = c.fetchall()
+	return data
+	
+def delete_data_compra(Artículo):
+	c.execute('DELETE FROM compra WHERE articulo ="{}"'.format(Artículo))
 	conn.commit()
 
 
-def view_all_data():
-	c.execute('SELECT * FROM taskstable')
-	data = c.fetchall()
-	return data
+def create_table_calendar():
+	c.execute('CREATE TABLE IF NOT EXISTS calendar(evento TEXT,fecha TEXT)')
 
-def view_all_task_names():
-	c.execute('SELECT DISTINCT task FROM taskstable')
-	data = c.fetchall()
-	return data
-
-def get_task(task):
-	c.execute('SELECT * FROM taskstable WHERE task="{}"'.format(task))
-	data = c.fetchall()
-	return data
-
-def get_task_by_status(task_status):
-	c.execute('SELECT * FROM taskstable WHERE task_status="{}"'.format(task_status))
-	data = c.fetchall()
-
-
-def edit_task_data(new_task,new_task_status,new_task_date,task,task_status,task_due_date):
-	c.execute("UPDATE taskstable SET task =?,task_status=?,task_due_date=? WHERE task=? and task_status=? and task_due_date=? ",(new_task,new_task_status,new_task_date,task,task_status,task_due_date))
+def add_data_calendar(evento,fecha):
+	c.execute('INSERT INTO calendar(evento,fecha) VALUES (?,?)',(evento,fecha))
 	conn.commit()
+
+def view_all_data_calendar():
+	c.execute('SELECT * FROM calendar')
 	data = c.fetchall()
 	return data
 
-def delete_data(task):
-	c.execute('DELETE FROM taskstable WHERE task="{}"'.format(task))
+def view_all_task_names_calendar():
+	c.execute('SELECT DISTINCT evento,fecha FROM calendar')
+	data = c.fetchall()
+	return data
+	
+def delete_data_calendar(Artículo):
+	c.execute('DELETE FROM calendar WHERE evento ="{}"'.format(Artículo))
 	conn.commit()
+
