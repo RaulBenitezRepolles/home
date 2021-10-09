@@ -5,10 +5,44 @@ from db_fxns import *
 import sqlite3
 from datetime import datetime
 from datetime import date
+
+
+
+
+
+
 now = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 conn = sqlite3.connect('data.db',check_same_thread=False)
 c = conn.cursor()
-st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+
+
+
+#ocultar menu
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+#margenes y fondo
+st.markdown(f"""
+    <style>
+        .reportview-container .main .block-container{{
+            max-width: {3000}px;
+            padding-top: {1}rem;
+            padding-right: {2.5}rem;
+            padding-left: {2.5}rem;
+            padding-bottom: {1}rem;
+        }}
+        .reportview-container .main {{
+            color: {'black'};
+            background-color: {'white'};
+        }}
+    </style>
+    """,
+            unsafe_allow_html=True)
+
 
 HTML_BANNER = """
     <div style="background-color:#464e5f;padding:10px;border-radius:10px">
@@ -17,52 +51,55 @@ HTML_BANNER = """
     """
 stc.html(HTML_BANNER)
 
+#botones radio horizontal
+st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 ListMenu = ['Compra','Calendario']
 ChoiceMenu = st.radio('Menú',ListMenu)
+
 if ChoiceMenu == 'Compra':
-	ListCompra = ['Ver','Añadir','Borrar']
-	ChoiceCompra = st.radio('Artículo',ListCompra)
 	create_table_compra()
-	if ChoiceCompra == 'Ver':
-		result = view_all_data_compra()
-		clean_df = pd.DataFrame(result,columns=["articulo","fecha"])
-		st.dataframe(clean_df)
-	if ChoiceCompra == 'Añadir':
-		Artículo = st.text_area("Añadir Artículo")
-		if st.button("Crear"):
-			add_data_compra(Artículo,now)
-			st.success("Añadido el Aartículo ::{} ::".format(Artículo))
-	if ChoiceCompra == 'Borrar':
-		unique_list = [i[0] for i in view_all_task_names_compra()]
-		delete_by_task_name = st.multiselect('Selecciona Artículos para Borrar', unique_list)
-		if st.button("Borrar"):
-			for Artículos in delete_by_task_name:
-				delete_data_compra(Artículos)
-			st.warning("Borrados los Artículos: '{}'".format(delete_by_task_name))
+	result = view_active_data_compra()
+	clean_df = pd.DataFrame(result,columns=["Artículo","Fecha","Activo"])
+	st.dataframe(clean_df)
+	c1, c2, c3 = st.columns((1,1,1))
+	Artículo = c1.text_area("Añadir Artículo")
+	if c1.button("Añadir",''):
+		add_data_compra(Artículo,now)
+		st.experimental_rerun()
+	unique_list = [i[0] for i in view_all_task_names_compra()]
+	delete_by_task_name = c2.multiselect('Selecciona Artículos para Borrar', unique_list)
+	if c2.button("Borrar"):
+		for Artículos in delete_by_task_name:
+			deactivate_data_compra(Artículos)
+		st.experimental_rerun()
+	if c3.button("Histórico"):
+		historic = view_all_data_compra()
+		clean_historic_df = pd.DataFrame(historic,columns=["Artículo","Fecha","Activo"])
+		c3.dataframe(clean_historic_df)
+
 if ChoiceMenu == 'Calendario':
-	ListCalendar = ['Ver','Añadir','Borrar']
-	ChoiceCalendar = st.radio('Artículo',ListCalendar)
 	create_table_calendar()
-	if ChoiceCalendar == 'Ver':
-		result = view_all_data_calendar()
-		clean_df = pd.DataFrame(result,columns=["articulo","fecha"])
-		st.dataframe(clean_df)
-	if ChoiceCalendar == 'Añadir':
-		date = st.date_input('Fecha')
-		hour = st.time_input('Hora')
-		fecha = str(date) +' '+ str(hour)
-		evento = st.text_area("Evento")
-		if st.button("Crear"):
-			add_data_calendar(evento,fecha)
-			st.success("Añadido el Aartículo ::{} ::".format(evento))
-	if ChoiceCalendar == 'Borrar':
-		unique_list = [i[0] for i in view_all_task_names_calendar()]
-		delete_by_task_name = st.multiselect('Selecciona Artículos para Borrar', unique_list)
-		if st.button("Borrar"):
-			for Artículos in delete_by_task_name:
-				delete_data_calendar(Artículos)
-			st.warning("Borrados los Artículos: '{}'".format(delete_by_task_name))
+	result = view_active_data_calendar()
+	clean_df = pd.DataFrame(result,columns=["evento","fecha","Activo"])
+	st.dataframe(clean_df)
+	c1, c2, c3 = st.columns((1,1,1))
+	Evento = c1.text_area("Añadir Evento")
+	date = c1.date_input('Fecha')
+	hour = c1.time_input('Hora')
+	Fecha = str(date) +' '+ str(hour)
 
-
+	if c1.button("Añadir"):
+		add_data_calendar(Evento,Fecha)
+		st.experimental_rerun()
+	unique_list = [i for i in view_all_task_names_calendar()]
+	delete_by_task_name = c2.multiselect('Selecciona Eventos a Borrar', unique_list)
+	if c2.button("Borrar"):
+		for Artículos in delete_by_task_name:
+			deactivate_data_calendar(Artículos[0])
+		st.experimental_rerun()
+	if c3.button("Histórico"):
+		historic = view_all_data_calendar()
+		clean_historic_df = pd.DataFrame(historic,columns=["evento","Fecha","Activo"])
+		c3.dataframe(clean_historic_df)
 
 
