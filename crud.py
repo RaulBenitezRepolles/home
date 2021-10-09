@@ -5,6 +5,9 @@ from db_fxns import *
 import sqlite3
 from datetime import datetime
 from datetime import date
+import base64
+
+
 
 now = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 conn = sqlite3.connect('data.db',check_same_thread=False)
@@ -39,7 +42,7 @@ HTML_BANNER = """
     """
 stc.html(HTML_BANNER)
 
-password = st.sidebar.text_input("Password",type='password') 
+password = st.sidebar.text_input("Password",'290920',type='password',key='password') 
 if password == st.secrets["password"]:
 	#botones radio horizontal
 	st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
@@ -77,7 +80,7 @@ if password == st.secrets["password"]:
 		date = c1.date_input('Fecha')
 		hour = c1.time_input('Hora')
 		Fecha = str(date) +' '+ str(hour)
-		if c1.button("Añadir"):
+		if c1.button("Añadir",''):
 			add_data_calendar(Evento,Fecha)
 			st.experimental_rerun()
 		unique_list = [i for i in view_all_task_names_calendar()]
@@ -88,7 +91,17 @@ if password == st.secrets["password"]:
 			st.experimental_rerun()
 		if c3.button("Histórico"):
 			historic = view_all_data_calendar()
-			clean_historic_df = pd.DataFrame(historic,columns=["evento","Fecha","Activo"])
+			clean_historic_df = pd.DataFrame(historic,columns=["Evento","Fecha","Activo"])
 			c3.dataframe(clean_historic_df)
 
 
+
+with st.sidebar.expander('Desarrollador', expanded=False):
+	password2 = st.text_input("Password",'admin',type='password',key='password2') 
+	if password2 == 'admin':
+		if st.button("Reseteo compra"):
+			c.execute('DROP TABLE compra')
+			st.experimental_rerun()
+		if st.button("Reseteo calendar"):
+			c.execute('DROP TABLE calendario')
+			st.experimental_rerun()
