@@ -35,10 +35,6 @@ st.markdown(f"""
             padding-left: {2.5}rem;
             padding-bottom: {1}rem;
         }}
-        .reportview-container .main {{
-            color: {'black'};
-            background-color: {'white'};
-        }}
     </style>
     """,
             unsafe_allow_html=True)
@@ -60,7 +56,7 @@ if ChoiceMenu == 'Compra':
 	create_table_compra()
 	result = view_active_data_compra()
 	clean_df = pd.DataFrame(result,columns=["Artículo","Fecha","Activo"])
-	st.dataframe(clean_df)
+	st.dataframe(clean_df[["Artículo"]])
 	c1, c2, c3 = st.columns((1,1,1))
 	Artículo = c1.text_area("Añadir Artículo")
 	if c1.button("Añadir",''):
@@ -80,8 +76,8 @@ if ChoiceMenu == 'Compra':
 if ChoiceMenu == 'Calendario':
 	create_table_calendar()
 	result = view_active_data_calendar()
-	clean_df = pd.DataFrame(result,columns=["evento","fecha","Activo"])
-	st.dataframe(clean_df)
+	clean_df = pd.DataFrame(result,columns=["Evento","Fecha","Activo"])
+	st.dataframe(clean_df[["Evento","Fecha"]])
 	c1, c2, c3 = st.columns((1,1,1))
 	Evento = c1.text_area("Añadir Evento")
 	date = c1.date_input('Fecha')
