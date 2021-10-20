@@ -4,14 +4,14 @@ c = conn.cursor()
 
 def create_table_compra():
 	#c.execute('DROP TABLE compra')
-	c.execute('CREATE TABLE IF NOT EXISTS compra(articulo TEXT,fecha TEXT, activo NUMBER)')
-
-def add_data_compra(Artículo,now):
-	c.execute('INSERT INTO compra(articulo,fecha,activo) VALUES (?,?,?)',(Artículo,now,1))
+	c.execute('CREATE TABLE IF NOT EXISTS compra(Artículo TEXT, Descripción TEXT, Inscripción_Fecha TEXT, Inscripción_User TEXT, Inscripción_ID_Actualizada TEXT, Activo NUMBER)')   
+	
+def add_data_compra(Artículo,Descripción,now,user):
+	c.execute('INSERT INTO compra(Artículo,Descripción,Inscripción_Fecha,Inscripción_User,Inscripción_ID_Actualizada,Activo) VALUES (?,?,?,?,?,?)',(Artículo,Descripción,now,user,-1,1))
 	conn.commit()
 
 def view_active_data_compra():
-	c.execute('SELECT * FROM compra WHERE activo = 1')
+	c.execute('SELECT * FROM compra WHERE Activo = 1')
 	data = c.fetchall()
 	return data
 
@@ -21,26 +21,35 @@ def view_all_data_compra():
 	return data
 
 def view_all_task_names_compra():
-	c.execute('SELECT DISTINCT articulo FROM compra WHERE activo = 1')
+	c.execute('SELECT DISTINCT Artículo,Descripción FROM compra WHERE Activo = 1')
 	data = c.fetchall()
 	return data
 	
-def deactivate_data_compra(Artículo):
-	c.execute('UPDATE compra SET activo =0 WHERE articulo ="{}" and activo = 1'.format(Artículo))
+def deactivate_data_compra(Artículo,Descripción):
+	c.execute('UPDATE compra SET Activo =0 WHERE Artículo ="{}" and Descripción = "{}" and Activo = 1'.format(Artículo,Descripción))
+	conn.commit()
+
+def view_all_deleted_task_names_compra():
+	c.execute('SELECT DISTINCT Artículo,Descripción FROM compra WHERE Activo = 0')
+	data = c.fetchall()
+	return data
+	
+def reactivate_data_compra(Artículo,Descripción):
+	c.execute('UPDATE compra SET Activo =1 WHERE Artículo ="{}" and Descripción = "{}" and Activo = 0'.format(Artículo,Descripción))
 	conn.commit()
 
 	#c.execute('DELETE FROM compra WHERE articulo ="{}"'.format(Artículo))
 
 
 def create_table_calendar():
-	c.execute('CREATE TABLE IF NOT EXISTS calendar(evento TEXT,fecha TEXT, activo NUMBER)')
+	c.execute('CREATE TABLE IF NOT EXISTS calendar(evento TEXT, Comentarios TEXT, fecha TEXT, Inscripción_Fecha TEXT, Inscripción_User TEXT, Inscripción_ID_Actualizada TEXT, Activo NUMBER)')
 
-def add_data_calendar(evento,fecha):
-	c.execute('INSERT INTO calendar(evento,fecha,activo) VALUES (?,?,?)',(evento,fecha,1))
+def add_data_calendar(Evento,Comentarios,Fecha,now,user):
+	c.execute('INSERT INTO calendar(evento,Comentarios,fecha,Inscripción_Fecha,Inscripción_User,Inscripción_ID_Actualizada,Activo) VALUES (?,?,?,?,?,?,?)',(Evento,Comentarios,Fecha,now,user,-1,1))
 	conn.commit()
 
 def view_active_data_calendar():
-	c.execute('SELECT * FROM calendar WHERE activo = 1')
+	c.execute('SELECT * FROM calendar WHERE Activo = 1')
 	data = c.fetchall()
 	return data
 
@@ -50,12 +59,21 @@ def view_all_data_calendar():
 	return data
 
 def view_all_task_names_calendar():
-	c.execute('SELECT DISTINCT evento,fecha FROM calendar WHERE activo = 1')
+	c.execute('SELECT DISTINCT evento,Comentarios,fecha FROM calendar WHERE Activo = 1')
 	data = c.fetchall()
 	return data
 	
-def deactivate_data_calendar(Artículo):
-	c.execute('UPDATE calendar SET activo =0 WHERE evento ="{}" and activo = 1'.format(Artículo))
+def deactivate_data_calendar(evento,Comentarios,fecha):
+	c.execute('UPDATE calendar SET Activo =0 WHERE evento ="{}" and Comentarios ="{}" and fecha ="{}" and Activo = 1'.format(evento,Comentarios,fecha))
+	conn.commit()
+
+def view_all_deleted_task_names_calendar():
+	c.execute('SELECT DISTINCT evento,Comentarios,fecha FROM calendar WHERE Activo = 0')
+	data = c.fetchall()
+	return data
+	
+def reactivate_data_calendar(evento,Comentarios,fecha):
+	c.execute('UPDATE calendar SET Activo =1 WHERE evento ="{}" and Comentarios ="{}" and fecha ="{}" and Activo = 0'.format(evento,Comentarios,fecha))
 	conn.commit()
 
 
