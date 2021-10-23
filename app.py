@@ -96,26 +96,31 @@ if view_active_username(user, hashlib.sha256(str.encode(password)).hexdigest())[
 		clean_df = pd.DataFrame(result,columns=["Artículo","Descripción","Número","Inscripción_Fecha",'Inscripción_User','Modificación_Fecha','Modificación_User',"Activo"])
 		st.dataframe(clean_df[["Artículo","Descripción","Número"]])
 		c1, c2 = st.columns((1,1))
-		Artículo = c1.text_input("Añadir Artículo")
-		Descripción = c1.text_input("Descripción")
-		unique_list = [i for i in view_all_task_names_compra()]
-		delete_by_task_name = c2.multiselect('Borrar Artículos', unique_list)
-		Número = c1.number_input("Número de Artículos",value=0)
-		if c1.button("Añadir",''):
-			add_data_compra(Artículo,Descripción,Número,now,user)
-			st.experimental_rerun()
-
-		if c2.button("Borrar"):
-			for Artículos in delete_by_task_name:
-				deactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
-			st.experimental_rerun()
-		c2.markdown("---")
-		unique_list = [i for i in view_all_deleted_task_names_compra()]
-		delete_by_task_name = c2.multiselect('Reactivar Artículos', unique_list)
-		if c2.button("Reactivar"):
-			for Artículos in delete_by_task_name:
-				reactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
-			st.experimental_rerun()
+		with c1.container():
+			st.markdown("---")
+			Artículo = st.text_input("Añadir Artículo")
+			Descripción = st.text_input("Descripción")
+			Número = st.number_input("Número de Artículos",value=1)
+			if st.button("Añadir",''):
+				add_data_compra(Artículo,Descripción,Número,now,user)
+				st.experimental_rerun()
+		with c2.container():
+			st.markdown("---")
+			unique_list = [i for i in view_all_task_names_compra()]
+			delete_by_task_name = st.multiselect('Borrar Artículos', unique_list)
+			if st.button("Borrar"):
+				for Artículos in delete_by_task_name:
+					deactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
+				st.experimental_rerun()
+			st.markdown("")
+			st.markdown("")
+			st.markdown("")
+			unique_list = [i for i in view_all_deleted_task_names_compra()]
+			delete_by_task_name = st.multiselect('Reactivar Artículos', unique_list)
+			if st.button("Reactivar"):
+				for Artículos in delete_by_task_name:
+					reactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
+				st.experimental_rerun()
 		st.markdown("---")
 		c1, c2 = st.columns((1,1))
 		historic = view_all_data_compra()
@@ -130,30 +135,33 @@ if view_active_username(user, hashlib.sha256(str.encode(password)).hexdigest())[
 		clean_df = pd.DataFrame(result,columns=["Evento","Comentarios","Fecha","Inscripción_Fecha",'Inscripción_User','Inscripción_ID_Actualizada',"Activo"])
 		st.dataframe(clean_df[["Evento","Comentarios","Fecha"]])
 		c1, c2 = st.columns((1,1))
-		Evento = c1.text_input("Añadir Evento")
-		Comentarios = c1.text_input("Comentarios")
-		date = c1.date_input('Fecha')
-		hour = c1.time_input('Hora')
-		Fecha = str(date) +' '+ str(hour)
-		if c1.button("Añadir",''):
-			add_data_calendar(Evento,Comentarios,Fecha,now,user)
-			st.experimental_rerun()
-
-		unique_list = [i for i in view_all_task_names_calendar()]
-		delete_by_task_name = c2.multiselect('Borrar Eventos', unique_list)
-		if c2.button("Borrar"):
-			for Evento in delete_by_task_name:
-				deactivate_data_calendar(Evento[0],Evento[1],Evento[2])
-			st.experimental_rerun()
-
-		c2.markdown("---")
-		unique_list = [i for i in view_all_deleted_task_names_calendar()]
-		delete_by_task_name = c2.multiselect('Reactivar Eventos', unique_list)
-		if c2.button("Reactivar"):
-			for Evento in delete_by_task_name:
-				reactivate_data_calendar(Evento[0],Evento[1],Evento[2])
-			st.experimental_rerun()
-
+		with c1.container():
+			st.markdown("---")
+			Evento = st.text_input("Añadir Evento")
+			Comentarios = st.text_input("Comentarios")
+			date = st.date_input('Fecha')
+			hour = st.time_input('Hora')
+			Fecha = str(date) +' '+ str(hour)
+			if st.button("Añadir",''):
+				add_data_calendar(Evento,Comentarios,Fecha,now,user)
+				st.experimental_rerun()
+		with c2.container():
+			st.markdown("---")
+			unique_list = [i for i in view_all_task_names_calendar()]
+			delete_by_task_name = st.multiselect('Borrar Eventos', unique_list)
+			if st.button("Borrar"):
+				for Evento in delete_by_task_name:
+					deactivate_data_calendar(Evento[0],Evento[1],Evento[2])
+				st.experimental_rerun()
+			st.markdown("")
+			st.markdown("")
+			st.markdown("")
+			unique_list = [i for i in view_all_deleted_task_names_calendar()]
+			delete_by_task_name = st.multiselect('Reactivar Eventos', unique_list)
+			if st.button("Reactivar"):
+				for Evento in delete_by_task_name:
+					reactivate_data_calendar(Evento[0],Evento[1],Evento[2])
+				st.experimental_rerun()
 		st.markdown("---")
 		c1, c2 = st.columns((1,1))
 		historic = view_all_data_calendar()
