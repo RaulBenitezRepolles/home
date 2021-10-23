@@ -5,14 +5,13 @@ from db_fxns import *
 import sqlite3
 from datetime import datetime
 from datetime import date
+import pytz
 import base64
 #import streamlit.components.v1 as components
 import hashlib
 import os
-#import locale
-
-#locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
-now = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+new_timezone = pytz.timezone("Europe/Madrid")
+now = str(datetime.now().astimezone(new_timezone).strftime("%Y-%m-%d %H:%M:%S"))
 conn = sqlite3.connect('data.db',check_same_thread=False)
 c = conn.cursor()
 create_table_users()
@@ -101,16 +100,16 @@ if view_active_username(user, hashlib.sha256(str.encode(password)).hexdigest())[
 		Descripción = c1.text_input("Descripción")
 		unique_list = [i for i in view_all_task_names_compra()]
 		delete_by_task_name = c2.multiselect('Borrar Artículos', unique_list)
-		if c2.button("Borrar"):
-			for Artículos in delete_by_task_name:
-				deactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
-			st.experimental_rerun()
-
-		c1, c2 = st.columns((1,1))
 		Número = c1.number_input("Número de Artículos",value=0)
 		if c1.button("Añadir",''):
 			add_data_compra(Artículo,Descripción,Número,now,user)
 			st.experimental_rerun()
+
+		if c2.button("Borrar"):
+			for Artículos in delete_by_task_name:
+				deactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
+			st.experimental_rerun()
+		c2.markdown("---")
 		unique_list = [i for i in view_all_deleted_task_names_compra()]
 		delete_by_task_name = c2.multiselect('Reactivar Artículos', unique_list)
 		if c2.button("Reactivar"):
@@ -133,27 +132,28 @@ if view_active_username(user, hashlib.sha256(str.encode(password)).hexdigest())[
 		c1, c2 = st.columns((1,1))
 		Evento = c1.text_input("Añadir Evento")
 		Comentarios = c1.text_input("Comentarios")
+		date = c1.date_input('Fecha')
+		hour = c1.time_input('Hora')
+		Fecha = str(date) +' '+ str(hour)
+		if c1.button("Añadir",''):
+			add_data_calendar(Evento,Comentarios,Fecha,now,user)
+			st.experimental_rerun()
+
 		unique_list = [i for i in view_all_task_names_calendar()]
 		delete_by_task_name = c2.multiselect('Borrar Eventos', unique_list)
 		if c2.button("Borrar"):
 			for Evento in delete_by_task_name:
 				deactivate_data_calendar(Evento[0],Evento[1],Evento[2])
 			st.experimental_rerun()
-			
-		c1, c2, c3 = st.columns((1,1,2))
-		date = c1.date_input('Fecha')
-		hour = c2.time_input('Hora')
-		Fecha = str(date) +' '+ str(hour)
-		if c1.button("Añadir",''):
-			add_data_calendar(Evento,Comentarios,Fecha,now,user)
-			st.experimental_rerun()
 
+		c2.markdown("---")
 		unique_list = [i for i in view_all_deleted_task_names_calendar()]
-		delete_by_task_name = c3.multiselect('Reactivar Eventos', unique_list)
-		if c3.button("Reactivar"):
+		delete_by_task_name = c2.multiselect('Reactivar Eventos', unique_list)
+		if c2.button("Reactivar"):
 			for Evento in delete_by_task_name:
 				reactivate_data_calendar(Evento[0],Evento[1],Evento[2])
 			st.experimental_rerun()
+
 		st.markdown("---")
 		c1, c2 = st.columns((1,1))
 		historic = view_all_data_calendar()
