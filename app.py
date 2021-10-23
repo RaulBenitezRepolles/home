@@ -9,7 +9,10 @@ import base64
 #import streamlit.components.v1 as components
 import hashlib
 import os
+import locale
 
+# Idioma "es-ES" (código para el español de España)
+locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
 now = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 conn = sqlite3.connect('data.db',check_same_thread=False)
 c = conn.cursor()
