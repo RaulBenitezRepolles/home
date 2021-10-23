@@ -170,3 +170,15 @@ if view_active_username(user, hashlib.sha256(str.encode(password)).hexdigest())[
 			c1.dataframe(clean_historic_df)
 		c2.download_button(label="Descargar CSV",data=clean_historic_df.to_csv().encode('utf-8'), file_name='Calendario_historico.csv', mime='text/csv', )
 
+
+
+
+from plyer.utils import platform
+from plyer import notification
+
+notification.notify(
+    title='Here is the title',
+    message='Here is the message',
+    app_name='Here is the application name',
+    app_icon='path/to/the/icon.' + ('ico' if platform == 'win' else 'png')
+)
