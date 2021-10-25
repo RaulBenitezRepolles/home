@@ -168,13 +168,13 @@ class HydraApp(object):
                 self._session_attrs = {'previous_app':None, 'selected_app':None,'other_nav_app':None, 'preserve_state':preserve_state, 'allow_access':self._no_access_level,'logged_in':False,'access_hash':None,**(self._user_session_params)}
 
 
-    def _encode_hyauth(self):
-        user_access_level, username = self.check_access()
-        payload = {"exp": datetime.now(timezone.utc) + timedelta(days=1), "userid": username,"user_level":user_access_level}
-        return jwt.encode(payload, self._hydralit_url_hash, algorithm="HS256")
-
-    def _decode_hyauth(self,token):
-        return jwt.decode(token, self._hydralit_url_hash, algorithms=["HS256"])
+    #def _encode_hyauth(self):
+    #    user_access_level, username = self.check_access()
+    #    payload = {"exp": datetime.now(timezone.utc) + timedelta(days=1), "userid": username,"user_level":user_access_level}
+    #    return jwt.encode(payload, self._hydralit_url_hash, algorithm="HS256")
+    #
+    #def _decode_hyauth(self,token):
+    #    return jwt.decode(token, self._hydralit_url_hash, algorithms=["HS256"])
 
 
     def add_loader_app(self, loader_app):
