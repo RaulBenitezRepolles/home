@@ -2,7 +2,7 @@ import streamlit as st
 st.set_page_config(page_title="App Álvaro",page_icon='👣',initial_sidebar_state="expanded")
 
 import sys
-sys.path.append('/home/raul/Escritorio/Proyectos Dev/App Alvaro/apps')
+sys.path.append('./apps')
 import compras, calendario, db_fxns
 from  db_fxns import * 
 import sqlite3

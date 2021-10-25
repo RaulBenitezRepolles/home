@@ -40,6 +40,7 @@ class compras(HydraHeadApp):
                     for Artículos in delete_by_task_name:
                         deactivate_data_compra(Artículos[0],Artículos[1],Artículos[2],now,user)
                     st.experimental_rerun()
+                    st.experimental_rerun()
                 st.markdown("")
                 st.markdown("")
                 st.markdown("")
