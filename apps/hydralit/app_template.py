@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod 
-from bokeh.models.widgets import Div
+#from bokeh.models.widgets import Div
 import validators
 import json
 import uuid
@@ -93,16 +93,15 @@ class HydraHeadApp(ABC):
         self._sneaky_redirect(redirect_target_app=redirect_target_app)
 
 
-    def _sneaky_redirect(self,redirect_target_app=None):
-
-        if redirect_target_app is not None and validators.url(redirect_target_app):
-            js = "window.open('{}')".format(redirect_target_app)
-            html = '<img src onerror="{}">'.format(js)
-            div = Div(text=html)
-            st.bokeh_chart(div)
-        else:
-            self.session_state.other_nav_app = redirect_target_app
-            st.experimental_rerun()
+    #def _sneaky_redirect(self,redirect_target_app=None):
+    #    if redirect_target_app is not None and validators.url(redirect_target_app):
+    #        js = "window.open('{}')".format(redirect_target_app)
+    #        html = '<img src onerror="{}">'.format(js)
+    #        div = Div(text=html)
+    #        st.bokeh_chart(div)
+    #    else:
+    #        self.session_state.other_nav_app = redirect_target_app
+    #        st.experimental_rerun()
 
 
     def download_button(self,object_to_download, download_filename, button_text, use_compression=False,parent_container=None,pickle_it=False, css_formatting=None, **kwargs):
