@@ -2,10 +2,10 @@ from typing import Dict
 import streamlit as st
 #import jwt
 from datetime import datetime, timedelta, timezone
-from hydralit.sessionstate import SessionState
-from hydralit.loading_app import LoadingApp
+from sessionstate import SessionState
+from loading_app import LoadingApp
 import hydralit_components as hc
-from hydralit.wrapper_class import Templateapp
+from wrapper_class import Templateapp
 
 class HydraApp(object):
     """
@@ -172,7 +172,7 @@ class HydraApp(object):
     #    user_access_level, username = self.check_access()
     #    payload = {"exp": datetime.now(timezone.utc) + timedelta(days=1), "userid": username,"user_level":user_access_level}
     #    return jwt.encode(payload, self._hydralit_url_hash, algorithm="HS256")
-#
+    #
     #def _decode_hyauth(self,token):
     #    return jwt.decode(token, self._hydralit_url_hash, algorithms=["HS256"])
 
