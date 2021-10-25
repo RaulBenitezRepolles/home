@@ -2,7 +2,7 @@ import streamlit as st
 st.set_page_config(page_title="App Álvaro",page_icon='👣',initial_sidebar_state="expanded")
 
 import sys
-sys.path.append('./apps')
+sys.path.append('/home/raul/Escritorio/Proyectos Dev/App Alvaro/apps')
 import compras, calendario, db_fxns, hydralit
 from  db_fxns import * 
 import sqlite3
@@ -109,7 +109,8 @@ if view_active_username(user, hashlib.sha256(str.encode(password)).hexdigest())[
     app.add_app("Compras", icon="🛒", app=compras.compras())
     app.add_app("Calendario", icon="📅", app=calendario.calendario())
     complex_nav = {
-            'Compras': ['Compras','Calendario'],#['Compras','Calendario'],
+            'Compras': ['Compras'],#['Compras','Calendario'],
             'Calendario': ['Calendario'],
         }
+    st.markdown("---")
     app.run(complex_nav)
