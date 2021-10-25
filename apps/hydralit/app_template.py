@@ -5,7 +5,7 @@ import json
 import uuid
 import re
 import pickle
-import compress_pickle as cp
+#import compress_pickle as cp
 import base64
 import streamlit as st
 import pandas as pd
@@ -146,17 +146,17 @@ class HydraHeadApp(ABC):
             object_to_download = json.dumps(object_to_download,**kwargs)
 
 
-        try:
-            if use_compression:
-                b64 = base64.b64encode(cp.dumps(object_to_download.encode(),compression="gzip")).decode()
-            else:
-                b64 = base64.b64encode(object_to_download.encode()).decode()
+        #try:
+        #    if use_compression:
+        #        b64 = base64.b64encode(cp.dumps(object_to_download.encode(),compression="gzip")).decode()
+        #    else:
+        #        b64 = base64.b64encode(object_to_download.encode()).decode()
 
-        except AttributeError as e:
-            if use_compression:
-                b64 = base64.b64encode(cp.dumps(object_to_download,compression="gzip")).decode()
-            else:
-                b64 = base64.b64encode(object_to_download).decode()
+        #except AttributeError as e:
+        #    if use_compression:
+        #        b64 = base64.b64encode(cp.dumps(object_to_download,compression="gzip")).decode()
+        #    else:
+        #        b64 = base64.b64encode(object_to_download).decode()
 
 
         button_uuid = str(uuid.uuid4()).replace('-', '')
