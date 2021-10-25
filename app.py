@@ -3,7 +3,7 @@ st.set_page_config(page_title="App Álvaro",page_icon='👣',initial_sidebar_sta
 
 import sys
 sys.path.append('./apps')
-import compras, calendario, db_fxns
+import compras, calendario, db_fxns, hydralit
 from  db_fxns import * 
 import sqlite3
 conn = sqlite3.connect('data.db',check_same_thread=False)
