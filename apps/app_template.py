@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod 
-from bokeh.models.widgets import Div
+from markups import Div
 import validators
 import json
 import uuid
