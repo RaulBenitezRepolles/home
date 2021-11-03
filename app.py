@@ -1,3 +1,7 @@
+import sys
+sys.path.append('./apps')
+import apps.st_aggrid
+
 #################### VARIABLES ####################
 import pytz
 from datetime import datetime
@@ -34,7 +38,7 @@ def table_variables(table,fields_type):
 #################### db ####################
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode,  GridUpdateMode, JsCode
+#from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode,  GridUpdateMode, JsCode
 import sqlite3
 conn = sqlite3.connect('data.db',check_same_thread=False)
 c = conn.cursor()
