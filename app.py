@@ -1,7 +1,6 @@
 import sys
-sys.path.append('./apps')
-import apps.st_aggrid
-
+sys.path.append('./apps') 
+from  apps.st_aggrid import * 
 #################### VARIABLES ####################
 import pytz
 from datetime import datetime
