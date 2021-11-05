@@ -186,8 +186,9 @@ class compras(HydraHeadApp):
 
 
 		except Exception as e:
-			import pathlib
-			st.image(str(pathlib.Path().absolute())+"/failure.png",width=100,)
+			from pathlib import Path
+			path = str(Path(__file__).parent.absolute())
+			st.image(path+"/failure.png",width=100,)
 			st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
 			st.error('Error details: {}'.format(e))
 		

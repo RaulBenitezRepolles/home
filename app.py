@@ -1,9 +1,10 @@
 import streamlit as st
 st.set_page_config(page_title="App Álvaro",page_icon='👣',initial_sidebar_state="expanded")
-import pathlib
+from pathlib import Path
+path = str(Path(__file__).parent.absolute())
 import sys
-sys.path.append(str(pathlib.Path().absolute())+'/apps')
-import compras, calendario, ocr#, db_fxns, hydralit
+sys.path.append(path+'/apps')
+import compras, calendario#, ocr#, db_fxns, hydralit
 #from  db_fxns import * 
 import sqlite3
 conn = sqlite3.connect('data.db',check_same_thread=False)
